@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Connect | Find Your Match</title>
+    
+    <style>
+        /* === CSS STYLING & ANIMATIONS === */
+        :root {
+            --primary: #db2777;
+            --primary-hover: #be185d;
+            --bg-color: #fdf2f8;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+        }
+
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            background-color: var(--bg-color); 
+            color: var(--text-dark); 
+            overflow-x: hidden;
+        }
+        
+        /* Hero Section */
+        .hero { 
+            text-align: center;
+            padding: 100px 20px 60px; 
+            background: linear-gradient(135deg, #fdf2f8 0%, #fbcfe8 100%);
+            border-bottom: 2px solid #f9a8d4;
+            animation: fadeInDown 1s ease-out;
+        }
+        
+        h1 { 
+            color: var(--primary); 
+            font-size: 3.5em; 
+            margin-bottom: 5px; 
+        }
+        
+        h2 { 
+            color: var(--primary-hover); 
+            font-weight: 400;
+        }
+        
+        p {
+            font-size: 1.1em;
+            color: var(--text-light);
+            max-width: 500px;
+            margin: 20px auto 40px auto;
+            line-height: 1.5;
+        }
+
+        /* Buttons */
+        .btn { 
+            background-color: var(--primary); 
+            color: white; 
+            border: none; 
+            padding: 12px 28px; 
+            font-size: 1.1em; 
+            cursor: pointer; 
+            border-radius: 30px; 
+            margin: 10px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(219, 39, 119, 0.3);
+        }
+        .btn:hover { 
+            background-color: var(--primary-hover); 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(219, 39, 119, 0.4);
+        }
+        
+        .btn-secondary { 
+            background-color: #4b5563; 
+            box-shadow: 0 4px 6px rgba(75, 85, 99, 0.3);
+        }
+        .btn-secondary:hover { 
+            background-color: #374151; 
+            box-shadow: 0 6px 12px rgba(75, 85, 99, 0.4);
+        }
+
+        /* Profile Section */
+        .profiles-section {
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .profiles-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1000px;
+            margin: 40px auto 0;
+        }
+
+        /* Profile Cards & Hover Animations */
+        .profile-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            width: 250px;
+            box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            opacity: 0; /* Hidden initially for scroll animation */
+            transform: translateY(30px);
+        }
+
+        .profile-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .profile-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 25px rgba(0,0,0,0.1);
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .profile-info {
+            padding: 20px;
+        }
+
+        .profile-name {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 0 0 5px 0;
+        }
+
+        .profile-bio {
+            color: var(--text-light);
+            font-size: 0.9em;
+            margin: 0;
+        }
+
+        /* Modals */
+        .modal-overlay { 
+            display: none; 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.6); 
+            backdrop-filter: blur(4px); /* Professional blur effect */
+            justify-content: center; 
+            align-items: center; 
+            z-index: 1000;
+        }
+        
+        .modal-content { 
+            background: white; 
+            padding: 40px 30px; 
+            border-radius: 15px; 
+            box-shadow: 0 20px 25px rgba(0,0,0,0.2); 
+            width: 320px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            animation: popIn 0.3s ease-out;
+            text-align: center;
+        }
+
+        input { 
+            padding: 12px; 
+            border: 1px solid #d1d5db; 
+            border-radius: 8px; 
+            font-size: 1em;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        input:focus { border-color: var(--primary); }
+        
+        footer { 
+            text-align: center;
+            padding: 30px; 
+            color: var(--text-light); 
+            font-size: 0.9em; 
+            background: white;
+        }
+
+        /* Keyframe Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero">
+        <h1>Love Connect</h1>
+        <h2>Discover Your Perfect Match</h2>
+        <p>Join thousands of singles looking for meaningful connections. Sign up and start your journey today!</p>
+        <button class="btn" id="getStartedBtn">Get Started</button>
+        <button class="btn btn-secondary" id="logInBtn">Log In</button>
+    </div>
+
+    <section class="profiles-section">
+        <h2 style="color: #1f2937; font-size: 2em;">Featured Singles Near You</h2>
+        <p style="margin-top: 0;">Our algorithm finds the best matches tailored just for you.</p>
+        
+        <div class="profiles-grid" id="profilesContainer"></div>
+    </section>
+
+    <div id="signUpModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 style="margin-top: 0; color: #db2777;">Create Account</h2>
+            <input type="text" placeholder="Full Name" required>
+            <input type="email" placeholder="Email Address" required>
+            <input type="password" placeholder="Password" required>
+            <button class="btn">Sign Up</button>
+            <button class="btn btn-secondary cancel-btn">Cancel</button>
+        </div>
+    </div>
+
+    <div id="logInModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 style="margin-top: 0; color: #db2777;">Welcome Back</h2>
+            <input type="email" placeholder="Email Address" required>
+            <input type="password" placeholder="Password" required>
+            <button class="btn">Log In</button>
+            <button class="btn btn-secondary cancel-btn">Cancel</button>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 Love Connect. All Rights Reserved.
+    </footer>
+
+    <script>
+        // --- 1. MODAL LOGIC (Opening & Closing) ---
+        const getStartedBtn = document.getElementById('getStartedBtn');
+        const logInBtn = document.getElementById('logInBtn');
+        const signUpModal = document.getElementById('signUpModal');
+        const logInModal = document.getElementById('logInModal');
+        const cancelBtns = document.querySelectorAll('.cancel-btn');
+
+        getStartedBtn.addEventListener('click', () => signUpModal.style.display = 'flex');
+        logInBtn.addEventListener('click', () => logInModal.style.display = 'flex');
+
+        cancelBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                signUpModal.style.display = 'none';
+                logInModal.style.display = 'none';
+            });
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === signUpModal) signUpModal.style.display = 'none';
+            if (e.target === logInModal) logInModal.style.display = 'none';
+        });
+
+
+        // --- 2. DYNAMIC ACCOUNTS/PROFILES (Makes it look pro!) ---
+        const profilesContainer = document.getElementById('profilesContainer');
+        
+        // Array of fake users
+        const users = [
+            { name: "Sarah, 24", bio: "Loves hiking and coffee dates.", img: "https://i.pravatar.cc/300?img=47" },
+            { name: "James, 27", bio: "Software dev by day, musician by night.", img: "https://i.pravatar.cc/300?img=11" },
+            { name: "Maya, 23", bio: "Looking for someone to travel the world with.", img: "https://i.pravatar.cc/300?img=5" }
+        ];
+
+        // Loop through users and create HTML cards
+        users.forEach(user => {
+            const card = document.createElement('div');
+            card.className = 'profile-card';
+            card.innerHTML = `
+                <img src="${user.img}" alt="${user.name}" class="profile-img">
+                <div class="profile-info">
+                    <h3 class="profile-name">${user.name}</h3>
+                    <p class="profile-bio">${user.bio}</p>
+                </div>
+            `;
+            profilesContainer.appendChild(card);
+        });
+
+
+        // --- 3. SCROLL ANIMATIONS (Intersection Observer) ---
+        // This makes the cards float up smoothly when you scroll down to them
+        const cards = document.querySelectorAll('.profile-card');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    // Add a tiny delay so they pop in one by one
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, 100); 
+                }
+            });
+        }, { threshold: 0.1 });
+
+        cards.forEach(card => observer.observe(card));
+    </script>
+</body>
+</html>
